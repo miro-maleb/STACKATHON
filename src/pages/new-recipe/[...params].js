@@ -4,7 +4,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Typography, Slider, Select, MenuItem, Button } from "@mui/material";
 import { Box, Container } from "@mui/system";
-
+const apiKey = process.env.OPENAI_API_KEY;
 export default function () {
   const router = useRouter();
   const { params } = router.query;
@@ -20,6 +20,17 @@ export default function () {
       setCountry(params[0]);
     }
   }, []);
+
+  const handleClick = () => {
+    console.log("apiKeyhere", apiKey);
+    if (!apiKey) {
+      alert("NO API KEY CONFIGURED");
+    } else {
+      router.replace(
+        `/generate/${spice}/${temperature}/${complexity}/${country}/${type}`
+      );
+    }
+  };
 
   const handleSubmit = () => {
     console.log("generating your recipe!");
@@ -124,15 +135,7 @@ export default function () {
             </Select>
           </label>
         </div>
-        <Button
-          variant="contained"
-          onClick={() =>
-            router.replace(
-              `/generate/${spice}/${temperature}/${complexity}/${country}/${type}`
-            )
-          }
-          type={"submit"}
-        >
+        <Button variant="contained" onClick={handleClick} type={"submit"}>
           Cook Something Up!
         </Button>
       </Container>

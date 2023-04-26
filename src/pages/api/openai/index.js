@@ -7,6 +7,11 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 export default async function handler(req, res) {
+  if (process.env.OPENAI_API_KEY === "") {
+    console.log("this is a test of the shipwid.e");
+    res.status(500).send("No openAi APi key configured");
+  }
+
   const ingredients = await axios.get("http://127.0.0.1:3000/api/ingredients");
 
   const prompt = `write a recipe title, mouthwatering description, list of ingredients used in the recipe, and explicit list of numbered instructions based on the following parameters: A spice rating (1-5), a choice of hot meal or cold meal, a complexity rating (1-5), a country of origin for the dish,  the type of meal (breakfast, lunch, dinner, or desert), and the available ingredients to use. You do not need to use all of the ingredients.
